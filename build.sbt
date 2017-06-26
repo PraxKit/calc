@@ -16,7 +16,10 @@ licenses +=("MIT", url("http://opensource.org/licenses/MIT"))
 //jsDependencies += RuntimeDOM
 jsDependencies in Test += RuntimeDOM
 
-scalaJSUseMainModuleInitializer := true
+// see https://gitter.im/scala-js/scala-js/archives/2017/04/13
+scalaJSUseMainModuleInitializer := false
+// scalaJSMainModuleInitializer := Some("praxkit.HelloWorld1")
+//mainClass in Compile := Some("praxkit.HelloWorld1")
 
 jsDependencies +=
   "org.webjars" % "jquery" % "2.1.3" / "2.1.3/jquery.js"
@@ -31,7 +34,9 @@ libraryDependencies ++= Seq(
   "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
   "org.scala-js" %%% "scalajs-dom" % "0.9.2",
   "com.thoughtworks.binding" %%% "dom" % "latest.release",
-  "com.github.japgolly.scalacss" %%% "core" % "0.5.3"
+  "com.github.japgolly.scalacss" %%% "core" % "0.5.3",
+  "com.lihaoyi" %%% "scalatags" % "0.6.5"
+
 )
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
