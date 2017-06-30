@@ -2,16 +2,20 @@ package praxkit
 
 import org.scalajs.dom
 import dom.html
-import scalajs.js.annotation.JSExportTopLevel
-import scalajs.js.annotation.JSExport
+import scalajs.js.annotation._
 import scalatags.JsDom.all._
-import scala.scalajs.js.JSApp
 
-@JSExportTopLevel("praxkit.HelloWorld1")
-object HelloWorld1 {
+
+@JSExportTopLevel("HelloWorld")
+object HelloWorld {
+  
+  @JSExport
+  def sayHello(): Unit = {
+    println("Hello world!")
+  }
 
   @JSExport
-  def start(target: html.Div) = {
+  def main(target: html.Div): Unit =  {
     val (animalA, animalB) = ("fox", "dog")
     target.appendChild(
       div(
