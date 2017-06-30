@@ -7,7 +7,7 @@ import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 import scala.scalajs.js.JSApp
 
-@JSExportTopLevel("HelloWorld1")
+@JSExportTopLevel("praxkit.HelloWorld1")
 object HelloWorld1 {
 
   @JSExport

@@ -1,5 +1,5 @@
 lazy val root = project.in(file("."))
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
 
 name := "calc"
 
