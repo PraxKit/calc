@@ -1,0 +1,87 @@
+package praxkit
+
+import org.scalajs.dom
+import dom.html
+import scalajs.js.annotation._
+import scalatags.JsDom.all._
+
+
+@JSExportTopLevel("Calc")
+object Calc {
+  
+  @JSExport
+  def sayHello(): Unit = {
+    println("Hello world!")
+  }
+// -- view
+  @JSExport
+  def main(target: html.Div): Unit =  {
+   
+    target.appendChild(
+      div(
+        h1(`class`:="display-5")("Hello Calc!"),
+        p(
+          """ 
+          Wie viele Sitzungen, Behandlungen, Konsultationen 
+          habe ich pro Monat?
+          """
+        ),
+        
+        div(cls := "inputfields")(
+          span(option, " Anzahl Sitzungen pro Monat"),
+          div(output),
+          div(
+            p( "Preis ", 
+              span(
+                price(1 , false).toString
+              )
+            )
+          )
+        ) 
+      )
+    ).render
+  }
+
+  val checkbox = input(
+    `type`:="checkbox"
+    ).render
+
+  val option = input(
+    `type` := "text",
+    placeholder := "Wochen Ferien",
+    value:= 4,
+    maxlength := "4",
+    size := "4"
+  ).render
+}
+
+  val output = span.render
+
+
+  // -- controller
+  def str2Int(input: String): Int ={
+     input match {
+       case i: String => ???
+     }
+  }
+
+  checkbox.onkeyup = (e: dom.Event) => {
+    output.textContent =
+    checkbox.value.toUpperCase
+  }
+
+  // -- model
+  @JSExport
+  def price(
+    number: Int, 
+    withCalendar: Boolean): Double = {
+
+    val unitprice = withCalendar match {
+      case true => 100
+      case _ => 85
+    } 
+
+    number * unitprice / 100
+
+  }
+}

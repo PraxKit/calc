@@ -26,7 +26,7 @@ object HelloWorld {
           """
         ),
           
-      p("Im Montat: ",aprice._1.toString, br, 
+      p("Im Monat: ",aprice._1.toString, br, 
         "Im Jahr: ", aprice._2.toString),
       div(box),
       div(output)
@@ -58,8 +58,8 @@ object HelloWorld {
   }
 
   box.onkeyup = (e: dom.Event) => {
-  output.textContent =
-    price(box.value.toInt, 4, true).toString
+    val p = price(box.value.toInt, 4, false)
+  output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
 }
   // -- model
   @JSExport
@@ -78,8 +78,10 @@ object HelloWorld {
     val yearprice = sessionsMonth * unitprice * workingmonth 
     
     val monthaverageprice = yearprice / 12
-    println ("Month: " + monthaverageprice)
-    println ("Year: " +yearprice)
-    (yearprice, monthaverageprice)
+    println ("Month: " + monthaverageprice + " " + round(monthaverageprice))
+    println ("Year: " +yearprice + " " + round(yearprice))
+    (round(yearprice), round(monthaverageprice))
   }
+
+  def round (input: Double): Double = BigDecimal(input).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
 }
