@@ -64,7 +64,12 @@ object HelloWorld {
     `type`:="checkbox"
   ).render
   
-  val output = div.render
+  val output = div(id:="empty")(
+     ul(
+       li(fmt(0), "pro Monat "),
+       li(fmt(0), "pro Jahr ")
+     )
+   ).render
 
 
   // -- controller
