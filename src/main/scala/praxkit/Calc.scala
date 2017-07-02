@@ -23,15 +23,15 @@ object HelloWorld {
           habe ich pro Monat?
           """
         ),
-      p("Die Berechnung der Kosten erfolgt auf Basis der ", em("Anzahl "), "Termine pro Monat."),   
-      h4("Beispiel: " ),
-      p("Ich habe durchschnittlich " + ex.sessionsMonth + " Termine pro Monat und plane " + ex.vacations + " Wochen Ferien.", br, 
-      "Ohne Kalenderfunktionen bezahle ich: "),
+      p("Die Berechnung der Kosten erfolgt auf Basis der Anzahl Termine pro Monat."),   
+      h5("Beispiel " ),
+      p("Wenn ich durchschnittlich " + ex.sessionsMonth + " Termine pro Monat habe und " + ex.vacations + " Wochen Ferien plane, ",
+      "dann bezahle ich ohne Kalenderfunktionen: "),
       ul( 
         li( fmt(aprice._2), "pro Monat. "), 
         li( fmt(aprice._1), "pro Jahr. ")
       ),
-      h4("Meine persönliche Kostenrechner"),
+      h5("Meine persönliche Kostenrechner"),
       div(span(box, " Anzahl Termine pro Monat")),
       div(span(vaccation, " Wochen Ferien im Jahr")),
       p(span(option, " mit Kalenderfunktionen")),
