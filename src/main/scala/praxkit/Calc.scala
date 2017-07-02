@@ -23,16 +23,16 @@ object HelloWorld {
           habe ich pro Monat?
           """
         ),
-          
-      h4("Beispiel: ", br, ex.toString ),
+      p("Die Berechnung der Kosten erfolgt auf Basis der ", em("Anzahl "), "Termine pro Monat."),   
+      h4("Beispiel: " ),
       p("Ich habe durchschnittlich " + ex.sessionsMonth + " Termine pro Monat und plane " + ex.vacations + " Wochen Ferien.", br, 
-      "Ohne Kalenderfunktionen kostet mich PraxKit: "),
+      "Ohne Kalenderfunktionen bezahle ich: "),
       ul( 
-        li("Im Monat: ",aprice._2.toString), 
-        li("Im Jahr: ", aprice._1.toString)
+        li( fmt(aprice._2), "pro Monat. "), 
+        li( fmt(aprice._1), "pro Jahr. ")
       ),
-      h4("Meine Berechnung"),
-      div(span(box, " Anzahl Sitzungen pro Monat")),
+      h4("Meine persönliche Kostenrechner"),
+      div(span(box, " Anzahl Termine pro Monat")),
       div(span(vaccation, " Wochen Ferien im Jahr")),
       p(span(option, " mit Kalenderfunktionen")),
       div(
@@ -48,14 +48,14 @@ object HelloWorld {
 
   val box = input(
     `type`:="text",
-    placeholder:="Anzahl Sitzungen",
+    placeholder:="Termine",
     value:="0",
     size:="4"
   ).render
 
   val vaccation = input(
     `type`:="text",
-    placeholder:="Wochen Ferien",
+    placeholder:="Ferien",
     value:="0",
     size:="4"
   ).render
@@ -71,13 +71,13 @@ object HelloWorld {
   
 
   box.onkeyup = (e: dom.Event) => {
-    myPrice.sessionsMonth = box.value.toInt
+    myPrice.sessionsMonth = toInt(box.value).getOrElse(0)
     val p = price(myPrice)
     renderResult(p)
   }
 
-   vaccation.onkeyup = (e: dom.Event) => {
-     myPrice.vacations = vaccation.value.toInt
+  vaccation.onkeyup = (e: dom.Event) => {
+    myPrice.vacations = toInt(vaccation.value).getOrElse(0) % 52
     val p = price(myPrice)
     renderResult(p)
   }
@@ -96,21 +96,23 @@ object HelloWorld {
    println(myPrice)
 
 
-   val result =div(id:=resultId)(
+   val result = div(id:=resultId)(
      ul(
-       li("Im Monat: ", p._2.toString),
-       li("Im Jahr: ", p._1.toString)
+       li(fmt(p._2), "pro Monat "),
+       li(fmt(p._1), "pro Jahr ")
      )
    ).render
-  
-  var c = output.firstChild
-  println (c)
    
-   if (output.hasChildNodes) {  output.replaceChild(result, c) }
+   if (output.hasChildNodes) {  
+     output.replaceChild(result, output.firstChild) 
+     //println("hasChildNodes")
+     }
    else {
-     c = output.appendChild(div(id:= resultId).render)
+     //println("no ChildNodes")
+     output.appendChild(div(id:= resultId).render)
      output.replaceChild(result, output.firstChild)
    }
+   
 
  }
   // -- model
@@ -135,17 +137,24 @@ object HelloWorld {
       val month = 12d
 
       val wm = month - (vacs.toDouble / 52 * month )
-      println("workingmonth " +wm)
       wm
     }
 
     val monthprice = p.sessionsMonth  * unitprice
     val yearprice = monthprice * workingmonth(p.vacations) 
 
-    println ("Month: " + monthprice + " " + round(monthprice))
-    println ("Year: " + yearprice + " " + round(yearprice))
     (round(yearprice), round(monthprice))
   }
 
   def round (input: Double): Double = BigDecimal(input).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+
+  def fmt(d: Double): String = f"CHF $d%10.2f "
+
+  def toInt(s: String): Option[Int] = {
+  try {
+    Some(s.toInt)
+  } catch {
+    case e: Exception => None
+  }
+}
 }
