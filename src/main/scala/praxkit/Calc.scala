@@ -36,7 +36,7 @@ object HelloWorld {
       div(span(vaccation, " Wochen Ferien im Jahr")),
       p(span(option, " mit Kalenderfunktionen")),
       div(
-        p(output)
+        output.render
       )
         
       ).render
@@ -64,7 +64,7 @@ object HelloWorld {
     `type`:="checkbox"
   ).render
   
-  val output = span.render
+  val output = div.render
 
 
   // -- controller
@@ -82,9 +82,26 @@ object HelloWorld {
     renderResult(p)
   }
 
+  option.onchange = (e: dom.Event) => {
+    val choice = option.checked
+    println("option: " + choice)
+     myPrice.withCalendar = choice
+    val p = price(myPrice)
+    renderResult(p)
+  }
+
  def renderResult(p: (Double,Double)): Unit = {
-   output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
+   //output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
    println(myPrice)
+   output.appendChild (
+     div(
+         ul(
+           li("Im Monat: ", p._2.toString),
+           li("Im Jahr: ", p._1.toString)
+         )
+       ).render
+   )
+
  }
   // -- model
   
