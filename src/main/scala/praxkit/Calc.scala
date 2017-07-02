@@ -17,24 +17,34 @@ object HelloWorld {
   def main(target: html.Div): Unit =  {
     target.appendChild(
       div(
-        h1("Hello Calc!"),
-        p(
+        h3(
           """ 
-          Wie viele Sitzungen bzw. Behandlungen 
-          habe ich pro Woche oder pro Monat?
+          Wie viele Termine 
+          habe ich pro Monat?
           """
         ),
           
-      p("Beispiel: Im Monat: ",aprice._1.toString, br, 
-        "Im Jahr: ", aprice._2.toString),
-      div(span(vaccation, " Wochen Ferien im Jahr")),
+      h4("Beispiel: ", br, ex.toString ),
+      p("Ich habe durchschnittlich " + ex.sessionsMonth + " Termine pro Monat und plane " + ex.vacations + " Wochen Ferien.", br, 
+      "Ohne Kalenderfunktionen kostet mich PraxKit: "),
+      ul( 
+        li("Im Monat: ",aprice._2.toString), 
+        li("Im Jahr: ", aprice._1.toString)
+      ),
+      h4("Meine Berechnung"),
       div(span(box, " Anzahl Sitzungen pro Monat")),
-      div(output)
+      div(span(vaccation, " Wochen Ferien im Jahr")),
+      p(span(option, " mit Kalenderfunktionen")),
+      div(
+        p(output)
+      )
         
       ).render
     )
   }
-  def aprice = price(Price(1, 4, true))
+
+  val ex = Price(12, 8, false)
+  def aprice = price(ex)
 
   val box = input(
     `type`:="text",
@@ -46,10 +56,13 @@ object HelloWorld {
   val vaccation = input(
     `type`:="text",
     placeholder:="Wochen Ferien",
-    value:="4",
-    size:="2"
+    value:="0",
+    size:="4"
   ).render
 
+  val option = input(
+    `type`:="checkbox"
+  ).render
   
   val output = span.render
 
@@ -61,13 +74,13 @@ object HelloWorld {
     myPrice.sessionsMonth = box.value.toInt
     val p = price(myPrice)
     renderResult(p)
- }
+  }
 
    vaccation.onkeyup = (e: dom.Event) => {
      myPrice.vacations = vaccation.value.toInt
     val p = price(myPrice)
     renderResult(p)
- }
+  }
 
  def renderResult(p: (Double,Double)): Unit = {
    output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
@@ -81,7 +94,7 @@ object HelloWorld {
     var withCalendar: Boolean)
 
   @JSExportTopLevel("myPrice")
-  var myPrice = Price(24, 4, false)
+  var myPrice = Price(0, 0, false)
 
   @JSExport
   def price(p: Price): (Double, Double) = {
@@ -91,14 +104,20 @@ object HelloWorld {
       case _ => 1.00d
     }
 
-    val workingmonth: Double = 12d - (p.vacations.toDouble / 4 )
+    def workingmonth(vacs: Int): Double = {
+      val month = 12d
 
-    val yearprice = p.sessionsMonth * unitprice * workingmonth 
-    
-    val monthaverageprice = yearprice / 12
-    println ("Month: " + monthaverageprice + " " + round(monthaverageprice))
-    println ("Year: " +yearprice + " " + round(yearprice))
-    (round(yearprice), round(monthaverageprice))
+      val wm = month - (vacs.toDouble / 52 * month )
+      println("workingmonth " +wm)
+      wm
+    }
+
+    val monthprice = p.sessionsMonth  * unitprice
+    val yearprice = monthprice * workingmonth(p.vacations) 
+
+    println ("Month: " + monthprice + " " + round(monthprice))
+    println ("Year: " + yearprice + " " + round(yearprice))
+    (round(yearprice), round(monthprice))
   }
 
   def round (input: Double): Double = BigDecimal(input).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
