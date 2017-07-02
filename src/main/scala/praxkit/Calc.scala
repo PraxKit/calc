@@ -28,7 +28,8 @@ object HelloWorld {
           
       p("Im Monat: ",aprice._1.toString, br, 
         "Im Jahr: ", aprice._2.toString),
-      div(box),
+      div(span(vaccation, " Wochen Ferien im Jahr")),
+      div(span(box, " Anzahl Sitzungen pro Monat")),
       div(output)
         
       ).render
@@ -38,12 +39,16 @@ object HelloWorld {
 
   val box = input(
     `type`:="text",
-    placeholder:="Anzahl Sitzungen"
+    placeholder:="Anzahl Sitzungen",
+    value:="0",
+    size:="4"
   ).render
 
   val vaccation = input(
     `type`:="text",
-    placeholder:="Wochen Ferien"
+    placeholder:="Wochen Ferien",
+    value:="4",
+    size:="2"
   ).render
 
   
@@ -51,11 +56,7 @@ object HelloWorld {
 
 
   // -- controller
-  def str2Int(input: String): Int ={
-     input match {
-       case i: String => ???
-     }
-  }
+  
 
   box.onkeyup = (e: dom.Event) => {
     val p = price(box.value.toInt, 4, false)
