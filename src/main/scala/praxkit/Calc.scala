@@ -92,15 +92,21 @@ object HelloWorld {
 
  def renderResult(p: (Double,Double)): Unit = {
    //output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
+   val resultId = "resultId"
    println(myPrice)
-   output.appendChild (
-     div(
-         ul(
-           li("Im Monat: ", p._2.toString),
-           li("Im Jahr: ", p._1.toString)
-         )
-       ).render
-   )
+
+
+   val result =div(id:=resultId)(
+     ul(
+       li("Im Monat: ", p._2.toString),
+       li("Im Jahr: ", p._1.toString)
+     )
+   ).render
+   
+   val n = output.appendChild(div(id:= resultId).render)
+   println (n)
+   output.replaceChild(result, n)
+   println (output.childNodes(0))
 
  }
   // -- model
