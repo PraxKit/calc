@@ -102,11 +102,15 @@ object HelloWorld {
        li("Im Jahr: ", p._1.toString)
      )
    ).render
+  
+  var c = output.firstChild
+  println (c)
    
-   val n = output.appendChild(div(id:= resultId).render)
-   println (n)
-   output.replaceChild(result, n)
-   println (output.childNodes(0))
+   if (output.hasChildNodes) {  output.replaceChild(result, c) }
+   else {
+     c = output.appendChild(div(id:= resultId).render)
+     output.replaceChild(result, output.firstChild)
+   }
 
  }
   // -- model
