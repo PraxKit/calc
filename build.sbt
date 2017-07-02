@@ -36,7 +36,6 @@ libraryDependencies ++= Seq(
   "com.thoughtworks.binding" %%% "dom" % "latest.release",
   "com.github.japgolly.scalacss" %%% "core" % "0.5.3",
   "com.lihaoyi" %%% "scalatags" % "0.6.5"
-
 )
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)

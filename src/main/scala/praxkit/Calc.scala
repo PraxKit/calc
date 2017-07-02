@@ -5,7 +5,6 @@ import dom.html
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
-
 @JSExportTopLevel("Calc")
 object HelloWorld {
   
@@ -26,7 +25,7 @@ object HelloWorld {
           """
         ),
           
-      p("Im Monat: ",aprice._1.toString, br, 
+      p("Beispiel: Im Monat: ",aprice._1.toString, br, 
         "Im Jahr: ", aprice._2.toString),
       div(span(vaccation, " Wochen Ferien im Jahr")),
       div(span(box, " Anzahl Sitzungen pro Monat")),
@@ -35,7 +34,7 @@ object HelloWorld {
       ).render
     )
   }
-  def aprice = price(1, 4, true)
+  def aprice = price(Price(1, 4, true))
 
   val box = input(
     `type`:="text",
@@ -59,24 +58,42 @@ object HelloWorld {
   
 
   box.onkeyup = (e: dom.Event) => {
-    val p = price(box.value.toInt, 4, false)
-  output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
-}
-  // -- model
-  @JSExport
-  def price(
-    sessionsMonth: Int, 
-    vacations: Int, 
-    withCalendar: Boolean): (Double, Double) = {
+    myPrice.sessionsMonth = box.value.toInt
+    val p = price(myPrice)
+    renderResult(p)
+ }
 
-    val unitprice = withCalendar match {
+   vaccation.onkeyup = (e: dom.Event) => {
+     myPrice.vacations = vaccation.value.toInt
+    val p = price(myPrice)
+    renderResult(p)
+ }
+
+ def renderResult(p: (Double,Double)): Unit = {
+   output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
+   println(myPrice)
+ }
+  // -- model
+  
+  case class Price(
+    var sessionsMonth: Int, 
+    var vacations: Int, 
+    var withCalendar: Boolean)
+
+  @JSExportTopLevel("myPrice")
+  var myPrice = Price(24, 4, false)
+
+  @JSExport
+  def price(p: Price): (Double, Double) = {
+
+    val unitprice = p.withCalendar match {
       case true => 1.85d
       case _ => 1.00d
     }
 
-    val workingmonth = 12 - (vacations / 4 )
+    val workingmonth: Double = 12d - (p.vacations.toDouble / 4 )
 
-    val yearprice = sessionsMonth * unitprice * workingmonth 
+    val yearprice = p.sessionsMonth * unitprice * workingmonth 
     
     val monthaverageprice = yearprice / 12
     println ("Month: " + monthaverageprice + " " + round(monthaverageprice))
