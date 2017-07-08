@@ -19,32 +19,41 @@ object HelloWorld {
       div(
         h3(
           """ 
-          Wie viele Termine 
-          habe ich pro Monat?
+          Wie viele Termine habe ich pro Monat?
           """
         ),
-      p("Die Berechnung der Kosten erfolgt auf Basis der Anzahl Termine pro Monat."),   
-      h5("Beispiel " ),
-      p("Wenn ich durchschnittlich " + ex.sessionsMonth + " Termine pro Monat habe und " + ex.vacations + " Wochen Ferien plane, ",
-      "dann bezahle ich ohne Kalenderfunktionen: "),
-      ul( 
-        li( fmt(aprice._2), "pro Monat. "), 
-        li( fmt(aprice._1), "pro Jahr. ")
+      p("Die Berechnung der Kosten erfolgt auf Basis der Anzahl Termine (Behandlungen, Sitzungen oder Konsultationen) pro Monat."), 
+      p("Bitte ausfüllen:"),  
+      br,
+      div(cls:="row")(
+        div(cls:="col-sm-6 col-md5")(
+          h5("Ich habe in der Regel"),
+          div(cls:="input")(span(box, " Termine pro Monat")),
+          div(cls:="input")(span(vaccation, " Wochen Ferien im Jahr")), br
+          
+        ),
+        div(cls:="col-sm-6 col-md5")(
+          h5("Kosten"),
+          div(cls:="input")(span(option, " mit Kalenderfunktionen")),
+          div(
+            output.render, br
+          )
+        )
       ),
-      h5("Meine persönliche Kostenrechner"),
-      div(span(box, " Anzahl Termine pro Monat")),
-      div(span(vaccation, " Wochen Ferien im Jahr")),
-      p(span(option, " mit Kalenderfunktionen")),
-      div(
-        output.render
-      )
+      beispiel.render
         
       ).render
     )
   }
-
-  val ex = Price(12, 8, false)
+  val ex = Price(16, 8, false)
   def aprice = price(ex)
+  val beispiel = div(cls:="beispiel")(
+     h5("Beispiel " ),
+      p("Wenn ich durchschnittlich " + ex.sessionsMonth + " Termine pro Monat habe und " + ex.vacations + " Wochen Ferien plane, ",
+      "dann bezahle ich ohne Kalenderfunktionen ", fmt(aprice._2), "pro Monat oder etwa ", 
+      fmt(aprice._1), "pro Jahr. "
+      ))
+ 
 
   val box = input(
     `type`:="text",
@@ -56,7 +65,7 @@ object HelloWorld {
   val vaccation = input(
     `type`:="text",
     placeholder:="Ferien",
-    value:="0",
+    value:="4",
     size:="4"
   ).render
 
@@ -67,7 +76,7 @@ object HelloWorld {
   val output = div(id:="empty")(
      ul(
        li(fmt(0), "pro Monat "),
-       li(fmt(0), "pro Jahr ")
+       li("etwa ", fmt(0), "pro Jahr ")
      )
    ).render
 
@@ -104,7 +113,7 @@ object HelloWorld {
    val result = div(id:=resultId)(
      ul(
        li(fmt(p._2), "pro Monat "),
-       li(fmt(p._1), "pro Jahr ")
+       li("etwa ", fmt(p._1), "pro Jahr ")
      )
    ).render
    
