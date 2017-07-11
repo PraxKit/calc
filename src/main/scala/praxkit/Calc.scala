@@ -59,14 +59,14 @@ object HelloWorld {
     `type`:="text",
     placeholder:="Termine",
     value:="0",
-    size:="4"
+    size:="3"
   ).render
 
   val vaccation = input(
     `type`:="text",
     placeholder:="Ferien",
-    value:="4",
-    size:="4"
+    value:="0",
+    size:="3"
   ).render
 
   val option = input(
