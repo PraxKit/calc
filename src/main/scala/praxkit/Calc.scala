@@ -8,10 +8,6 @@ import scalatags.JsDom.all._
 @JSExportTopLevel("Calc")
 object HelloWorld {
   
-  @JSExport
-  def sayHello(): Unit = {
-    println("Hello world!")
-  }
 // -- view
   @JSExport
   def main(target: html.Div): Unit =  {
@@ -76,7 +72,7 @@ object HelloWorld {
   val output = div(id:="empty")(
      ul(
        li(fmt(0), "pro Monat "),
-       li("etwa ", fmt(0), "pro Jahr ")
+       li(fmt(0), "pro Jahr ")
      )
    ).render
 
@@ -98,7 +94,7 @@ object HelloWorld {
 
   option.onchange = (e: dom.Event) => {
     val choice = option.checked
-    println("option: " + choice)
+    //println("option: " + choice)
      myPrice.withCalendar = choice
     val p = price(myPrice)
     renderResult(p)
@@ -107,13 +103,16 @@ object HelloWorld {
  def renderResult(p: (Double,Double)): Unit = {
    //output.textContent = p._2.toString + " pro Monat, " +  p._1.toString + " pro Jahr."
    val resultId = "resultId"
-   println(myPrice)
+   //println(myPrice)
 
 
    val result = div(id:=resultId)(
      ul(
        li(fmt(p._2), "pro Monat "),
-       li("etwa ", fmt(p._1), "pro Jahr ")
+       if(myPrice.vacations == 0 || myPrice.sessionsMonth == 0) 
+         li(fmt(p._1), "pro Jahr")
+       else 
+         li("Etwa ", fmt(p._1), "pro Jahr ")
      )
    ).render
    
