@@ -5,3 +5,8 @@ target/
 .settings/
 .idea/
 node_modules/
+.ensime_cache
+.ensime
+pc.stdout.log
+.DS_Store
+ensime-langserver.log
